@@ -28,19 +28,25 @@ var transporter = nodemailer.createTransport({
   transporter.use('compile', markdown());
    
   var currentdate = new Date(); 
-  var datetime =  currentdate.getDate() + "-"
-                  + (currentdate.getMonth()+1)  + "-" 
-                  + currentdate.getFullYear() + " "  
-                  + currentdate.getHours() + ":"  
-                  + currentdate.getMinutes() + ":" 
-                  + currentdate.getSeconds();
+//   var datetime =  currentdate.getDate() + "-"
+//                   + (currentdate.getMonth()+1)  + "-" 
+//                   + currentdate.getFullYear() + " "  
+//                   + currentdate.getHours() + ":"  
+//                   + currentdate.getMinutes() + ":" 
+//                   + currentdate.getSeconds();
 
   var currentYear = currentdate.getFullYear();
-  var currentMonth = currentdate.getMonth();
+  var currentMonth = currentdate.getMonth() + 1;
 
   const monthNames = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"];
 
+//FOR December
+if(currentMonth == 1)
+{
+    currentYear -=1;
+    currentMonth = 12; 
+}
 //res is the result (Body of the email)  
 var res = "City Annual Fiscal Conditions Reports downloaded in "+ monthNames[currentMonth-1] + " "+ currentYear +": ";
 var MonthCityQuery = "SELECT Count(reportrequeststats.document) AS count FROM reportrequeststats WHERE reportrequeststats.year = "+ currentYear +" AND reportrequeststats.month = "+currentMonth +" AND (reportrequeststats.document = \"City Annual Fiscal Conditions Report FYE 2016\" OR reportrequeststats.document = \"City Annual Fiscal Conditions Report FYE 2015\" OR reportrequeststats.document = \"City Annual Fiscal Conditions Report FYE 2014\" OR reportrequeststats.document = \"City Annual Fiscal Conditions Report FYE 2013\" OR reportrequeststats.document = \"City Annual Fiscal Conditions Report FYE 2017\")"
